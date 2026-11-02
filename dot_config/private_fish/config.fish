@@ -251,7 +251,8 @@ fish_add_path /home/okw/.opencode/bin
 
 # >>> splashboard >>>
 # Added by `splashboard install`. Safe to remove.
-if type -q splashboard
+# 非対話シェルでは表示用コマンドを起動しない。
+if status is-interactive; and type -q splashboard
     splashboard init fish | source
 end
 # <<< splashboard <<<
