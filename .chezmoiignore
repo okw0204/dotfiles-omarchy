@@ -15,7 +15,8 @@
 !.config/opencode/scripts/
 !.config/opencode/scripts/**
 !.config/opencode/skills/
-!.config/opencode/skills/**
+# 共通 skill は直下のリンクだけを管理する。
+!.config/opencode/skills/*
 .config/opencode/skills/**/.git
 .config/opencode/skills/**/.git/**
 
@@ -37,5 +38,29 @@
 **/node_modules/**
 **/*lock*
 !.config/mise/mise.lock
+!.agents/.skill-lock.json
 **/*.sqlite
 **/*.sqlite-*
+
+# 自作・手元管理は omp、npx 管理は .agents に実体を保存する。
+# 各ツールへのリンクは個別に管理し、ツール所有のデータを取り込まない。
+# npx 更新後は skill 本体と .agents/.skill-lock.json を一緒に取り込む。
+# 共通ライセンスは更新で消えない .agents/licenses に保存する。
+.codex/skills/.system
+.codex/skills/.system/**
+.agents/skills/**/.git
+.agents/skills/**/.git/**
+.agents/skills/**/__pycache__
+.agents/skills/**/__pycache__/**
+.omp/agent/skills/**/.git
+.omp/agent/skills/**/.git/**
+.omp/agent/skills/**/__pycache__
+.omp/agent/skills/**/__pycache__/**
+
+# Omarchy は Arch Linux の既存設定として残し、他の OS には配布しない。
+{{ if and (eq .chezmoi.os "linux") (eq .chezmoi.osRelease.id "arch") }}
+!.config/opencode/skills/omarchy/**
+{{ else }}
+.claude/skills/omarchy
+.codex/skills/omarchy
+{{ end }}
