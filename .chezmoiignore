@@ -1,3 +1,7 @@
+# リポジトリ運用の文書はホームへ配布しない。
+AGENTS.md
+README.md
+
 # Large/stateful app data
 .config/chromium/**
 .config/BraveSoftware/**
