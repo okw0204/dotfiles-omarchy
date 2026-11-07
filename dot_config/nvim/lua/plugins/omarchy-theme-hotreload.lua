@@ -10,14 +10,8 @@ return {
 			vim.api.nvim_create_autocmd("User", {
 				pattern = "LazyReload",
 				callback = function()
-					-- Unload the theme module
-					package.loaded["plugins.theme"] = nil
-
 					vim.schedule(function()
-						local ok, theme_spec = pcall(require, "plugins.theme")
-						if not ok then
-							return
-						end
+						local theme_spec = dofile(vim.fn.stdpath("config") .. "/lua/plugins/theme.local.lua")
 
 						-- Find the theme plugin and unload it
 						local theme_plugin_name = nil

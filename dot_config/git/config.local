@@ -1,0 +1,4 @@
+# 個人識別情報。共有設定 ~/.config/git/config から include で読み込まれる。
+[user]
+	name = okw
+	email = okw0204@gmail.com

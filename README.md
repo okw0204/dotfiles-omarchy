@@ -29,4 +29,27 @@ WSL2 ではこの source をホームに適用しない。リポジトリの保�
 - `dot_omp/agent/PERSONALITY.md`
 - `dot_agents/skills/herdr/SKILL.md`
 
-既に配布済みの実ファイルはこの移行で削除しない。これら以外の既存設定・スキルはそのまま残す。
+既に配布済みの実ファイルは、source からの移行だけでは削除しない。
+
+## 共通設定の移行後
+
+共通の mise・lazygit・スキルと、fish・Git・Neovim の共通部分は `dotfiles` に移した。同じ配置先を両リポジトリから配布しない。こちらは Arch のローカル設定と Omarchy 連携だけを保持する。
+
+新しい環境では、次の順で復元する。
+
+1. `dotfiles` の `README.md` を読み、必要な共通設定を明示的にコピーする。スキルは本体・ライセンス・相対リンクをセットで復元する。
+2. Arch のこの source と destination を確認し、ローカル設定と Omarchy 連携を chezmoi で重ねる。既存ファイルは先にバックアップする。
+3. 必要なツールを導入し、fish・Git・Neovim で共通設定とローカル設定が読み込まれることを確認する。`mise install` は明示的に行い、このリポジトリから自動起動しない。
+
+共通ファイルの復元をせずに、この source だけで初期環境を構築しない。逆に、移行済みの環境で共通設定を更新するときは `dotfiles` 側だけを更新する。既存環境の `chezmoi re-add` で共通設定を再登録しない。
+
+Node の既存バージョン `25.2.1` は `~/.config/mise/mise.local.toml` と `mise.local.lock` に残している。共通側の Node `24.14.1` より優先される。これは OS 制約ではなく、移行時に Arch の選択を変えないためのローカル設定。
+
+残している環境側の設定は次のとおり。
+
+- fish：`local.fish`（Vault・略語・Arch パッケージ連携）と `linux-disk.fish`（ディスク操作関数）。
+- Git：`config.local`（既存の個人識別情報）。共通の `config` から相対 include で読む。
+- Neovim：`options.local.lua` と `remote_clipboard.lua`（OSC 52）、`theme.local.lua` のリンクとテーマ再読み込み処理。
+- スキル：Omarchy 専用スキルと、それへの Claude／Codex のリンク。
+
+Neovim の初回移行では、旧 `~/.config/nvim/lua/plugins/theme.lua` のリンク自体をバックアップへ移してから共通ファイルをコピーする。リンク先の Omarchy テーマを上書きしないこと。新しいリンクは `theme.local.lua` に配置する。
